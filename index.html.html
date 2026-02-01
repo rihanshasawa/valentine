@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Will You Be My Valentine?</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+  }
+
+  .container {
+    text-align: center;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+  }
+
+  .buttons {
+    position: relative;
+    height: 120px;
+  }
+
+  button {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+  }
+
+  #yesBtn {
+    background: #fff;
+    color: #ff4d6d;
+    left: 50%;
+    transform: translateX(-120%);
+  }
+
+  #noBtn {
+    background: #ff4d6d;
+    color: #fff;
+    left: 50%;
+    transform: translateX(20%);
+  }
+
+  .love-screen {
+    display: none;
+    text-align: center;
+    animation: fadeIn 1.5s ease forwards;
+  }
+
+  .love-screen h2 {
+    font-size: 3rem;
+  }
+
+  .love-screen p {
+    font-size: 1.4rem;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="container" id="questionScreen">
+  <h1>Will you be my Valentine? 💖</h1>
+  <div class="buttons">
+    <button id="yesBtn">Yes 💘</button>
+    <button id="noBtn">No 🙃</button>
+  </div>
+</div>
+
+<div class="love-screen" id="loveScreen">
+  <h2>Yayyyy!!! 💍💖</h2>
+  <p>
+    From this moment to forever —  
+    every smile, every dream, every heartbeat…  
+    I choose **you**.  
+    Happy Valentine’s Day, my love ❤️
+  </p>
+</div>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const questionScreen = document.getElementById("questionScreen");
+  const loveScreen = document.getElementById("loveScreen");
+
+  noBtn.addEventListener("mouseover", () => {
+    const x = Math.random() * (window.innerWidth - 150);
+    const y = Math.random() * (window.innerHeight - 150);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  });
+
+  yesBtn.addEventListener("click", () => {
+    questionScreen.style.display = "none";
+    loveScreen.style.display = "block";
+    startConfetti();
+  });
+
+  // Confetti magic 🎉
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let confetti = [];
+
+  function startConfetti() {
+    for (let i = 0; i < 300; i++) {
+      confetti.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 6 + 2,
+        d: Math.random() * 5 + 1,
+        color: `hsl(${Math.random() * 360}, 100%, 70%)`
+      });
+    }
+    animate();
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confetti.forEach((c, i) => {
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+      ctx.fillStyle = c.color;
+      ctx.fill();
+      c.y += c.d;
+      if (c.y > canvas.height) confetti[i].y = 0;
+    });
+    requestAnimationFrame(animate);
+  }
+</script>
+
+</body>
+</html>
